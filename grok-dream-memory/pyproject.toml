@@ -23,7 +23,7 @@ dependencies = [
 ]
 
 [project.scripts]
-dream-memory = "src.dream_memory.cli:app"
+dream-memory = "dream_memory.cli:app"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
