@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>grok-dream-memory dashboard</title>
+<style>
+  :root { --bg: #0f1117; --card: #1a1d27; --accent: #7c6cf8; --text: #e2e8f0; --muted: #64748b; --green: #22c55e; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: "Segoe UI", system-ui, sans-serif; padding: 2rem; }
+  h1 { color: var(--accent); margin-bottom: 0.25rem; font-size: 1.6rem; }
+  .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.9rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 1.5rem; }
+  h2 { font-size: 1rem; color: var(--accent); margin-bottom: 1rem; }
+  label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.3rem; }
+  input, textarea, select { width: 100%; background: #0f1117; border: 1px solid #2d3148; border-radius: 6px; color: var(--text); padding: 0.5rem 0.75rem; font-size: 0.9rem; margin-bottom: 0.75rem; outline: none; }
+  textarea { resize: vertical; min-height: 80px; }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  button { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.25rem; cursor: pointer; font-size: 0.9rem; }
+  button:hover { opacity: 0.85; }
+  .btn-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .output { margin-top: 1rem; background: #0f1117; border-radius: 6px; padding: 0.75rem; font-size: 0.8rem; font-family: monospace; max-height: 240px; overflow-y: auto; white-space: pre-wrap; border: 1px solid #2d3148; }
+  .tag { display: inline-block; background: #2d3148; border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.75rem; color: var(--accent); margin: 0.1rem; }
+</style>
+</head>
+<body>
+<h1>🧠 grok-dream-memory</h1>
+<p class="subtitle">Local AI memory dashboard — lanes: episodic · rules · safety · preferences</p>
+
+<div class="grid">
+  <!-- Add Memory -->
+  <div class="card">
+    <h2>Add Memory</h2>
+    <label>Text</label>
+    <textarea id="add-text" placeholder="Enter memory…"></textarea>
+    <label>Lane</label>
+    <select id="add-lane">
+      <option value="episodic">episodic</option>
+      <option value="rules">rules</option>
+      <option value="safety">safety</option>
+      <option value="preferences">preferences</option>
+    </select>
+    <button onclick="addMemory()">Store</button>
+    <div class="output" id="add-out">—</div>
+  </div>
+
+  <!-- Recall -->
+  <div class="card">
+    <h2>Recall</h2>
+    <label>Query</label>
+    <input id="recall-query" type="text" placeholder="What do you remember about…"/>
+    <label>Lane (optional)</label>
+    <select id="recall-lane">
+      <option value="">all lanes</option>
+      <option value="episodic">episodic</option>
+      <option value="rules">rules</option>
+      <option value="safety">safety</option>
+      <option value="preferences">preferences</option>
+    </select>
+    <button onclick="recallMemory()">Recall</button>
+    <div class="output" id="recall-out">—</div>
+  </div>
+
+  <!-- Controls -->
+  <div class="card">
+    <h2>Actions</h2>
+    <div class="btn-row">
+      <button onclick="runDream()">🌙 Dream</button>
+      <button onclick="showAll()">📋 Show All</button>
+    </div>
+    <div class="output" id="action-out">—</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="card">
+    <h2>Lane tags</h2>
+    <div>
+      <span class="tag">episodic</span> — events, conversations, context<br/><br/>
+      <span class="tag">rules</span> — patterns, preferences extracted by dreamer<br/><br/>
+      <span class="tag">safety</span> — hard constraints, never forgotten<br/><br/>
+      <span class="tag">preferences</span> — soft preferences, style, tone
+    </div>
+  </div>
+</div>
+
+<script>
+const api = async (path, method = "GET", body = null) => {
+  const opts = { method, headers: { "Content-Type": "application/json" } };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(path, opts);
+  return r.json();
+};
+
+async function addMemory() {
+  const text = document.getElementById("add-text").value.trim();
+  const lane = document.getElementById("add-lane").value;
+  if (!text) return;
+  const res = await api("/add", "POST", { text, lane });
+  document.getElementById("add-out").textContent = JSON.stringify(res, null, 2);
+}
+
+async function recallMemory() {
+  const query = document.getElementById("recall-query").value.trim();
+  const lane = document.getElementById("recall-lane").value || undefined;
+  if (!query) return;
+  const body = { query, top_k: 5 };
+  if (lane) body.lane = lane;
+  const res = await api("/recall", "POST", body);
+  document.getElementById("recall-out").textContent = JSON.stringify(res, null, 2);
+}
+
+async function runDream() {
+  const res = await api("/dream", "POST");
+  document.getElementById("action-out").textContent = JSON.stringify(res, null, 2);
+}
+
+async function showAll() {
+  const res = await api("/show");
+  document.getElementById("action-out").textContent = JSON.stringify(res, null, 2);
+}
+</script>
+</body>
+</html>

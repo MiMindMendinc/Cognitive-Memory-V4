@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grok-dream-memory"
+version = "1.0.0"
+description = "Local AI memory with dream consolidation and 4 memory lanes."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Lyle" }]
+dependencies = [
+    "qdrant-client>=1.7.0",
+    "sentence-transformers>=2.2.0",
+    "apscheduler>=3.10.0",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.0.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "python-multipart>=0.0.9",
+]
+
+[project.scripts]
+dream-memory = "dream_memory.cli:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
