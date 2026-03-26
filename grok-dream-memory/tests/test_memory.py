@@ -2,14 +2,10 @@
 from __future__ import annotations
 
 import hashlib
-import sys
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
-
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from dream_memory.config import Config, LANES
 
@@ -44,8 +40,6 @@ def store(tmp_path):
         return MemoryStore(config)
 
 
-# Import after patching is established via fixture; also patch at module level for
-# non-fixture tests that just need the class imported.
 with patch("dream_memory.memory.SentenceTransformer", return_value=_make_fake_encoder()):
     from dream_memory.memory import MemoryStore
 from dream_memory.dreamer import dream_cycle

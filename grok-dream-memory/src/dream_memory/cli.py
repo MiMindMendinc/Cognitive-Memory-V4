@@ -102,8 +102,11 @@ def main(
 ) -> None:
     logging.basicConfig(level=logging.DEBUG if debug else logging.WARNING)
     if api:
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).parent.parent.parent / "api"))
         import uvicorn
-        from api.server import app as fastapi_app
+        from server import app as fastapi_app
         uvicorn.run(fastapi_app, host="0.0.0.0", port=8000)
         return
     if ctx.invoked_subcommand is None:

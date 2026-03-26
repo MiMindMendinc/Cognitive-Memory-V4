@@ -46,8 +46,8 @@ def dream_cycle(store: Optional[MemoryStore] = None, config: Optional[Config] = 
                     payload={"consolidated": True},
                     points=[mem["id"]],
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("Failed to mark memory %s as consolidated: %s", mem["id"], exc)
             consolidated += 1
 
     # Step 3 – prune
