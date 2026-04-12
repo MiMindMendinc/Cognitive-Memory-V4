@@ -1,38 +1,77 @@
-# Cognitive Memory V4
+# Cognitive Memory V4: Self-Improving Multi-Agent Cognitive Architecture
 
-## Overview
-Cognitive Memory V4 is a groundbreaking application that provides a seamless integration of cognitive memory features, allowing users to manage their memory effectively and efficiently. This version introduces enhanced memory lanes and a comprehensive understanding of the dream cycle.
+**A production-ready cognitive memory architecture for AI systems featuring long-term memory and autonomous reasoning.**
 
-## Features
-- **Cognitive Memory Features**: Advanced tools for memory retention and retrieval.
-- **Memory Lanes**: Organize memories in a structured layout.
-- **Installation Instructions**: Detailed steps to set up the application on various platforms.
-- **CLI and API Usage**: Comprehensive guides on how to utilize the command line interface and API endpoints.
-- **Dream Cycle Process**: Understanding how our application optimizes the dream cycle for better memory management.
-- **Roadmap**: Insights into future updates and features to enhance user experience.
+`Cognitive Memory V4` is a sophisticated memory system designed to provide AI agents with human-like memory capabilities. Developed by **Michigan MindMend Inc.**, it integrates long-term storage, dream-based consolidation, and reinforcement learning to enable AI systems to learn and improve over time while maintaining a privacy-first, offline-capable posture.
 
-## Installation Instructions
-1. Clone the repository: `git clone https://github.com/MiMindMendinc/Cognitive-Memory-V4.git`
-2. Navigate to the project directory: `cd Cognitive-Memory-V4`
-3. Install dependencies: `npm install`
-4. Start the application: `npm start`
+## 🎯 Features
 
-## CLI Usage
-To utilize the CLI:
-- Run `npm run cli` to access the command line interface functionalities.
+- **Long-Term Memory**: Persistent storage for agent experiences and knowledge.
+- **Dream-Based Consolidation**: Autonomous background processing to consolidate and optimize memory.
+- **Reinforcement Learning**: Enables agents to learn from past successes and failures.
+- **Contradiction Detection**: Identifies and resolves conflicting information within the memory store.
+- **Autonomous Reasoning**: Facilitates complex decision-making based on historical data.
+- **FastAPI Integration**: Production-ready API for seamless integration with AI agents.
+- **Local-First AI Support**: Designed to work with local LLMs and vector databases like Qdrant.
 
-## API Usage
-API endpoints include:
-- **GET /api/memory**: Retrieve all memories.
-- **POST /api/memory**: Add a new memory.
-- **DELETE /api/memory/:id**: Remove a memory by ID.
+## 🚀 Quick Start
 
-## Dream Cycle Process
-The dream cycle process helps users visualize and optimize their memory recall through systematic practices.
+### Installation
 
-## Roadmap
-- Enhance memory lane functionalities.
-- Integrate advanced AI features.
-- Improve user interface for better accessibility.
+```bash
+git clone https://github.com/MiMindMendinc/Cognitive-Memory-V4.git
+cd Cognitive-Memory-V4
+pip install -r requirements.txt
+```
 
-Congratulations on exploring Cognitive Memory V4! We hope it revolutionizes the way you manage your memories!
+### Basic Usage
+
+```python
+from cognitive_memory import CognitiveMemory
+
+# Initialize the memory system
+memory = CognitiveMemory(db_url="http://localhost:6333")
+
+# Store an experience
+memory.store("Agent completed task A successfully.", metadata={"task": "A", "status": "success"})
+
+# Retrieve relevant memories
+context = memory.query("How did I handle task A previously?")
+print(context)
+```
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────┐
+│   AI Agent / Application                │
+└──────────────┬──────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────┐
+│   Cognitive Memory V4                   │
+│  ┌───────────────────────────────────┐  │
+│  │ Short-Term / Working Memory       │  │
+│  └───────────────────────────────────┘  │
+│  ┌───────────────────────────────────┐  │
+│  │ Long-Term Vector Store (Qdrant)   │  │
+│  └───────────────────────────────────┘  │
+│  ┌───────────────────────────────────┐  │
+│  │ Consolidation Engine (Dreaming)   │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘
+```
+
+## 🔒 Privacy & Security
+
+- ✅ Offline Capable: Can be deployed entirely on-premises.
+- ✅ Data Sovereignty: You maintain full control over the memory data.
+- ✅ Secure Integration: Designed for trust-critical environments.
+
+## 📄 License
+
+MIT - Built for the people, not the platforms.
+
+---
+
+**Built by Michigan MindMend Inc.** | Privacy-first AI for families | [Website](https://github.com/MiMindMendinc)
